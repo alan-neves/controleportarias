@@ -1,0 +1,52 @@
+services:
+  controleportarias:
+    build: .
+    image: controleportarias:latest
+    container_name: controleportarias
+    ports:
+      - "8000:80"
+    depends_on:
+      - mariadb
+    networks:
+      - controleportarias-network
+    volumes:
+      - ./:/var/www/html
+    environment:
+      HOME: /tmp
+    user: "${UID:-1000}:${GID:-1000}"
+
+  mariadb:
+    image: mariadb:11
+    container_name: controleportarias_mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: controleportarias
+      MYSQL_USER: controleportarias
+      MYSQL_PASSWORD: controleportarias
+      MYSQL_ROOT_PASSWORD: controleportarias
+    networks:
+      - controleportarias-network
+
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: controleportarias_selenium
+    ports:
+      - "7900:7900" # VNC (pra ver o browser rodando)
+    networks:
+      - controleportarias-network
+    shm_size: 2gb
+
+  senhaunica-faker:
+    image: uspdev/senhaunica-faker
+    container_name: controleportarias_senhaunica-faker
+    ports:
+      - "3141:3141"
+    environment:
+          - APP_URL=http://auth.local:3141
+    networks:
+      controleportarias-network:
+        aliases:
+          - auth.local
+
+networks:
+  controleportarias-network:
