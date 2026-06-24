@@ -41,8 +41,12 @@ $menu = [
         'url' => '/',
     ],
     [
-        # este item de menu será substituido no momento da renderização
-        'key' => 'menu_dinamico',
+        'text' => '<i class="fas fa-clipboard-list"></i> Registros',
+        'url' => '/itens',
+    ],
+    [
+        'text' => '<i class="fas fa-plus-circle"></i> Novo Registro',
+        'url' => '/itens/create',
     ],
     [
         'text' => 'Drop Down',
@@ -108,7 +112,7 @@ return [
     'right_menu' => $right_menu,
 
     # mensagens flash - https://uspdev.github.io/laravel#31-mensagens-flash
-    'mensagensFlash' => false,
+    'mensagensFlash' => true,
 
     # container ou container-fluid
     'container' => 'container-fluid',
