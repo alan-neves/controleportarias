@@ -33,7 +33,7 @@ class ItemCrudTest extends DuskTestCase
      * - exclusão do registro
      * - registro com NºUSP e patrimônio (mutator grava sem pontos)
      */
-    public function test_example(): void
+    public function test_crud(): void
     {
         $this->browse(function (Browser $browser) {
             $foto1Path = $this->fakeImagePath('foto1.jpeg');
@@ -63,7 +63,6 @@ class ItemCrudTest extends DuskTestCase
                 ->assertSee('O nome é obrigatório quando não há NºUSP.')
                 ->assertSee('O documento é obrigatório quando não há NºUSP.')
                 ->type('nome', 'Zé Ninguém')
-                // AJUSTE 1: tipo_documento agora é <select>, não input de texto
                 ->select('tipo_documento', 'RG')
                 ->type('documento', '852963741')
                 ->type('numero_serie', '7895324')
@@ -123,23 +122,21 @@ class ItemCrudTest extends DuskTestCase
             // Preenche form com NºUSP
             $browser->type('origem', 'ADM-FFLCH')
                 ->type('destino', 'Letras')
-                ->type('codpes', '13821998')
+                ->type('codpes', '1111')
                 ->type('nome', 'João sem braço')
-                ->type('patrimonio', '200.7894.98')
+                ->type('patrimonio', '200.1111.98')
                 ->type('observacao', 'Texto sobre o item')
                 ->press('Registrar')
                 ->pause(100);
 
             // Verifica se o Item foi registrado
-            // AJUSTE 2: o mutator grava o patrimônio sem pontos ("200789498"),
-            // então o valor exibido na lista não é mais "200.7894.98"
             $browser->assertPathIs('/itens')
                 ->assertSee('Item registrado com sucesso!')
                 ->assertSee('Letras')
                 ->assertSee('ADM-FFLCH')
                 ->assertSee('João sem braço')
-                ->assertSee('13821998')
-                ->assertSee('200789498');
+                ->assertSee('1111')
+                ->assertSee('200111198');
 
             // Teste view show do item
             $browser->clickLink('Ver')
