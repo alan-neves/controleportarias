@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Item;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class ItemRequest extends FormRequest
 {
@@ -12,7 +15,15 @@ class ItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('admin');
+    }
+
+    protected function prepareForValidation(): void
+    {
+        // sem documento não faz sentido guardar o tipo (o select sempre envia um valor)
+        if (blank($this->documento)) {
+            $this->merge(['tipo_documento' => null]);
+        }
     }
 
     /**
@@ -27,8 +38,8 @@ class ItemRequest extends FormRequest
             'destino'        => 'required',
             'codpes'         => 'nullable|integer',
             'nome'           => 'required_without:codpes',
-            'tipo_documento' => 'required_without:codpes',
-            'documento'      => 'required_without:codpes',
+            'documento'      => 'required_without:codpes|nullable|string|max:50',
+            'tipo_documento' => ['nullable', 'required_with:documento', Rule::in(Item::TIPOS_DOCUMENTO)],
             'patrimonio'     => 'nullable',
             'numero_serie'   => 'nullable',
             'observacao'     => 'nullable',
@@ -44,8 +55,9 @@ class ItemRequest extends FormRequest
             'destino.required' => 'O campo destino é obrigatório.',
             'codpes.integer' => 'O NºUSP deve ser um número inteiro.',
             'nome.required_without' => 'O nome é obrigatório quando não há NºUSP.',
-            'tipo_documento.required_without' => 'O tipo do documento é obrigatório quando não há NºUSP.',
             'documento.required_without' => 'O documento é obrigatório quando não há NºUSP.',
+            'tipo_documento.required_with' => 'Informe o tipo do documento.',
+            'tipo_documento.in' => 'Tipo de documento inválido.',
             'fotos.max' => 'Você pode enviar no máximo 10 fotos por vez.',
             'fotos.*.starts_with' => 'Uma das fotos enviadas não está em um formato válido. (formatos aceitos jpeg e png)',
             'fotos.*.max' => 'Uma das fotos enviadas excede o tamanho máximo permitido (2MB).',
