@@ -6,6 +6,7 @@ use App\Models\Foto;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class FotoController extends Controller
@@ -37,6 +38,8 @@ class FotoController extends Controller
     // Deleta foto individualmente 
     public function destroy(Foto $foto)
     {
+        Gate::authorize('admin');
+        
         $foto->delete();
         return back()->with('alert-success', 'Foto removida com sucesso!');
     }

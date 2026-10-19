@@ -49,24 +49,9 @@ $menu = [
         'url' => '/itens/create',
     ],
     [
-        'text' => 'Drop Down',
-        'submenu' => $submenu2,
-        'can' => '',
-    ],
-    [
-        'text' => 'Está logado',
-        'url' => config('app.url') . '/logado', // com caminho absoluto
-        'can' => 'user',
-    ],
-    [
         'text' => 'Menu gerente',
         'url' => 'gerente',
         'can' => 'gerente',
-    ],
-    [
-        'text' => 'Menu admin',
-        'submenu' => $admin,
-        'can' => 'admin',
     ],
 ];
 
