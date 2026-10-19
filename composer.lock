@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37144c0c7bb9cf4133a9cdeec4bbd2ba",
+    "content-hash": "7e0750773c7840c706c7b03a14373286",
     "packages": [
         {
             "name": "brick/math",
@@ -6769,6 +6769,94 @@
             "time": "2025-12-02T11:56:42+00:00"
         },
         {
+            "name": "uspdev/cache",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/cache.git",
+                "reference": "5ac05e7c2913ddb1e35f5652b0930f19b5fb283c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/cache/zipball/5ac05e7c2913ddb1e35f5652b0930f19b5fb283c",
+                "reference": "5ac05e7c2913ddb1e35f5652b0930f19b5fb283c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\Cache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Masaki Kawabata Neto",
+                    "email": "masaki.kawabata@gmail.com"
+                }
+            ],
+            "description": "Library to connect to cache server",
+            "homepage": "https://github.com/uspdev/cache",
+            "support": {
+                "issues": "https://github.com/uspdev/cache/issues",
+                "source": "https://github.com/uspdev/cache/tree/1.0.0"
+            },
+            "time": "2021-04-07T23:14:52+00:00"
+        },
+        {
+            "name": "uspdev/laravel-replicado",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/laravel-replicado.git",
+                "reference": "123f20faee303c8e4286447786d561bad1acc15b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/laravel-replicado/zipball/123f20faee303c8e4286447786d561bad1acc15b",
+                "reference": "123f20faee303c8e4286447786d561bad1acc15b",
+                "shasum": ""
+            },
+            "require": {
+                "uspdev/replicado": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Uspdev\\LaravelReplicado\\ReplicadoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\LaravelReplicado\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "Masaki Kawabata Neto",
+                    "email": "kawabata@usp.br"
+                }
+            ],
+            "description": "Wrapper laravel para uspdev/replicado",
+            "support": {
+                "issues": "https://github.com/uspdev/laravel-replicado/issues",
+                "source": "https://github.com/uspdev/laravel-replicado/tree/1.1.0"
+            },
+            "time": "2026-03-24T10:51:44+00:00"
+        },
+        {
             "name": "uspdev/laravel-usp-theme",
             "version": "2.8.23",
             "source": {
@@ -6817,6 +6905,55 @@
                 "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.23"
             },
             "time": "2025-12-04T17:51:35+00:00"
+        },
+        {
+            "name": "uspdev/replicado",
+            "version": "1.28.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/replicado.git",
+                "reference": "b5f2fdc1ebb2d1c645dcb948bc2a99e2d3e4fa15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/replicado/zipball/b5f2fdc1ebb2d1c645dcb948bc2a99e2d3e4fa15",
+                "reference": "b5f2fdc1ebb2d1c645dcb948bc2a99e2d3e4fa15",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo_dblib": "*",
+                "illuminate/collections": "^8 || ^9 || ^10 || ^11 || ^12 || ^13",
+                "monolog/monolog": "^2 || ^3",
+                "php": "^7 || ^8",
+                "uspdev/cache": "^1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "Uspdev\\Replicado\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Thiago Gomes Verissimo",
+                    "email": "thiago.verissimo@usp.br",
+                    "homepage": "https://github.com/thiagogomesverissimo"
+                }
+            ],
+            "description": "Classes PHP que consome dados do Replicado USP",
+            "homepage": "https://github.com/uspdev/replicado",
+            "support": {
+                "issues": "https://github.com/uspdev/replicado/issues",
+                "source": "https://github.com/uspdev/replicado/tree/1.28.4"
+            },
+            "time": "2026-09-03T15:10:07+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
