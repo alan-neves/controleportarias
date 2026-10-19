@@ -1,102 +1,119 @@
 @extends('layouts.app')
 @section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h3>Editar Registro</h3>
-        <a href="/itens/{{ $item->id }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </a>
-    </div>
-    <div class="card-body">
-        <form method="POST" action="/itens/{{ $item->id }}">
-            @csrf
-            @method('PATCH')
-            <div class="mb-3">
-                <label class="form-label">Origem</label>
-                <input type="text" class="form-control" name="origem" id="origem" value="{{ old('origem', $item->origem) }}">
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-6">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Editar Registro</h3>
+                <a href="/itens/{{ $item->id }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Destino</label>
-                <input type="text" class="form-control" name="destino" id="destino" value="{{ old('destino', $item->destino) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">NºUSP</label>
-                <input type="text" class="form-control" name="codpes" id="codpes" value="{{ old('codpes', $item->codpes) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Nome</label>
-                <input type="text" class="form-control" name="nome" id="nome" value="{{ old('nome', $item->nome) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Tipo do Documento</label>
-                <input type="text" class="form-control" name="tipo_documento" id="tipo_documento" value="{{ old('tipo_documento', $item->tipo_documento) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Documento</label>
-                <input type="text" class="form-control" name="documento" id="documento" value="{{ old('documento', $item->documento) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Patrimônio</label>
-                <input type="text" class="form-control" name="patrimonio" id="patrimonio" value="{{ old('patrimonio', $item->patrimonio) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Número de Série</label>
-                <input type="text" class="form-control" name="numero_serie" id="numero_serie" value="{{ old('numero_serie', $item->numero_serie) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Observação</label>
-                <textarea class="form-control" name="observacao" id="observacao" rows="3">{{ old('observacao', $item->observacao) }}</textarea>
-            </div>
+            <div class="card-body">
+                <form method="POST" action="/itens/{{ $item->id }}">
+                    @csrf
+                    @method('PATCH')
+                    <div class="mb-3">
+                        <label class="form-label">Origem</label>
+                        <input type="text" class="form-control" name="origem" id="origem" value="{{ old('origem', $item->origem) }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Destino</label>
+                        <input type="text" class="form-control" name="destino" id="destino" value="{{ old('destino', $item->destino) }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">NºUSP</label>
+                        <input type="text" class="form-control" name="codpes" id="codpes"
+                               list="lista-pessoas" autocomplete="off" value="{{ old('codpes', $item->codpes) }}">
+                        <datalist id="lista-pessoas"></datalist>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control" name="nome" id="nome" value="{{ old('nome', $item->nome) }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-5 mb-3">
+                            <label class="form-label">Tipo do Documento</label>
+                            <select class="form-select" name="tipo_documento" id="tipo_documento">
+                                @foreach(\App\Models\Item::TIPOS_DOCUMENTO as $tipo)
+                                    <option value="{{ $tipo }}" @selected(old('tipo_documento', $item->tipo_documento ?? 'CPF') === $tipo)>{{ $tipo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-7 mb-3">
+                            <label class="form-label">Documento</label>
+                            <input type="text" class="form-control" name="documento" id="documento" value="{{ old('documento', $item->documento) }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Patrimônio</label>
+                        <input type="text" class="form-control" name="patrimonio" id="patrimonio"
+                               list="lista-patrimonios" autocomplete="off" value="{{ old('patrimonio', $item->patrimonio) }}">
+                        <datalist id="lista-patrimonios"></datalist>
+                        <div id="info-patrimonio" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Número de Série</label>
+                        <input type="text" class="form-control" name="numero_serie" id="numero_serie" value="{{ old('numero_serie', $item->numero_serie) }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Observação</label>
+                        <textarea class="form-control" name="observacao" id="observacao" rows="3">{{ old('observacao', $item->observacao) }}</textarea>
+                    </div>
 
-            {{-- Upload de novas fotos --}}
-            <div class="mb-3">
-                <label class="form-label">Adicionar fotos</label>
-                <div class="mb-2">
-                    <video id="video" autoplay class="img-thumbnail w-100 mb-2 d-none" style="max-height: 200px;"></video>
-                    <div class="d-flex gap-2 mb-2">
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="ligarWebcam()">
-                            <i class="fas fa-camera"></i> Ligar Câmera
-                        </button>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="pararWebcam()">
-                            Desligar
-                        </button>
-                        <button type="button" class="btn btn-success btn-sm" onclick="tirarFoto()" id="btnTirar" disabled>
-                            Tirar Foto
+                    {{-- Upload de novas fotos --}}
+                    <div class="mb-3">
+                        <label class="form-label">Adicionar fotos</label>
+                        <div class="mb-2">
+                            <video id="video" autoplay class="img-thumbnail w-100 mb-2 d-none" style="max-height: 200px;"></video>
+                            <div class="d-flex gap-2 mb-2">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="ligarWebcam()">
+                                    <i class="fas fa-camera"></i> Ligar Câmera
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="pararWebcam()">
+                                    Desligar
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm" onclick="tirarFoto()" id="btnTirar" disabled>
+                                    Tirar Foto
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" class="form-control mb-2" id="arquivo" accept="image/*" multiple onchange="adicionarArquivos()">
+                        <div id="preview-fotos" class="foto-gallery"></div>
+                        <div id="fotos-hidden"></div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Salvar
                         </button>
                     </div>
-                </div>
-                <input type="file" class="form-control mb-2" id="arquivo" accept="image/*" multiple onchange="adicionarArquivos()">
-                <div id="preview-fotos" class="foto-gallery"></div>
-                <div id="fotos-hidden"></div>
-            </div>
+                </form>
 
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Salvar
-            </button>
-        </form>
-
-        {{-- Fotos existentes --}}
-        @if($item->fotos->isNotEmpty())
-        <div class="mt-4">
-            <label class="form-label"><strong>Fotos cadastradas</strong></label>
-            <div class="foto-gallery">
-                @foreach($item->fotos as $foto)
-                <div class="foto-thumb">
-                    <img src="{{ $foto->base64 }}" alt="Foto">
-                    <form action="/fotos/{{ $foto->id }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                                class="btn btn-danger foto-thumb-remove"
-                                onclick="return confirm('Remover foto?')"
-                                title="Remover">✕</button>
-                    </form>
+                {{-- Fotos existentes --}}
+                @if($item->fotos->isNotEmpty())
+                <div class="mt-4">
+                    <label class="form-label"><strong>Fotos cadastradas</strong></label>
+                    <div class="foto-gallery">
+                        @foreach($item->fotos as $foto)
+                        <div class="foto-thumb">
+                            <img src="{{ $foto->base64 }}" alt="Foto">
+                            <form action="/fotos/{{ $foto->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="btn btn-danger foto-thumb-remove"
+                                        onclick="return confirm('Remover foto?')"
+                                        title="Remover">✕</button>
+                            </form>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
-                @endforeach
+                @endif
+
             </div>
         </div>
-        @endif
-
     </div>
 </div>
 
@@ -181,4 +198,9 @@ window.addEventListener('beforeunload', pararWebcam);
 // Restaura as fotos já anexadas quando o form volta com erro de validação
 atualizarPreviews();
 </script>
+@endsection
+
+@section('javascripts_bottom')
+@parent
+@include('itens.partials.autocomplete')
 @endsection
